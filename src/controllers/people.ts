@@ -36,9 +36,9 @@ export async function createPeople(req: Request, res: Response) {
       .returning("id")
   )[0];
 
-  const people: DBPeople = (await db("peoples").where("id", peopleId))[0];
+  const people: DBPeople = await db("peoples").where("id", peopleId).first();
 
-  return res.status(200).json({
+  return res.status(201).json({
     id: peopleId,
     name: people.name,
     document: people.document,
