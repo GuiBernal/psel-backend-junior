@@ -6,8 +6,6 @@ import { routeNames } from "../helpers/routes";
 const routes = Router();
 const { root } = routeNames;
 
-routes.get(root.get, (_: Request, res: Response) => {
-  return res.status(200).json({ ok: true });
-});
+routes.get(root.get, (_: Request, res: Response) => res.status(200).json({ ok: true }));
 
 export default routes;

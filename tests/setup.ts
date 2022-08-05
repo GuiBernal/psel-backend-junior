@@ -9,9 +9,7 @@ jest.setTimeout(20000);
 const masterConn = Knex(knexConfig);
 const databaseName = `test_${randomBytes(8).toString("hex")}`;
 
-const testKnexConfig = JSON.parse(
-  JSON.stringify(knexConfig)
-) as typeof knexConfig;
+const testKnexConfig = JSON.parse(JSON.stringify(knexConfig)) as typeof knexConfig;
 
 testKnexConfig.connection.database = databaseName;
 const knex = Knex(testKnexConfig);
@@ -22,9 +20,7 @@ beforeAll(async () => {
 
     await knex.migrate.latest();
   } catch (err) {
-    process.stderr.write(
-      `${err instanceof Error ? err.stack : JSON.stringify(err)}\n`
-    );
+    process.stderr.write(`${err instanceof Error ? err.stack : JSON.stringify(err)}\n`);
     process.exit(1);
   }
 });

@@ -2,12 +2,7 @@ module.exports = {
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: "coverage",
-  coveragePathIgnorePatterns: [
-    "/knexfile.ts",
-    "/node_modules/",
-    "/src/migrations/",
-    "/tests/",
-  ],
+  coveragePathIgnorePatterns: ["/knexfile.ts", "/node_modules/", "/src/migrations/", "/tests/"],
   coverageReporters: ["lcov", "text"],
   coverageThreshold: {
     global: {
