@@ -223,7 +223,8 @@ Siga exatamente os padrões de request e response.
   {
     "value": 100.0,
     "description": "Venda do cimento para Clodson",
-    "cvv": "512"
+    "cvv": "512",
+    "type": "credit"
   }
   ```
 
@@ -235,6 +236,7 @@ Siga exatamente os padrões de request e response.
     "value": 100.0,
     "description": "Venda do cimento para Lucas",
     "cvv": "512",
+    "type": "credit",
     "createdAt": "2022-08-01T14:30:41.203653",
     "updatedAt": "2022-08-01T14:30:41.203653"
   }
@@ -253,6 +255,7 @@ Siga exatamente os padrões de request e response.
         "id": "05a0ab2d-5ece-45b6-b7d3-f3ecce2713d5",
         "value": 100.0,
         "description": "Venda do cimento para Lucas.",
+        "type": "credit",
         "createdAt": "2022-08-01T14:30:41.203653",
         "updatedAt": "2022-08-01T14:30:41.203653"
       }
@@ -287,6 +290,7 @@ Siga exatamente os padrões de request e response.
     "id": "092ec73f-d7c3-4afb-bac0-9c7e8eb33eae",
     "value": 100.0,
     "description": "Estorno de cobrança indevida.",
+    "type": "debit",
     "createdAt": "2022-08-01T14:30:41.203653",
     "updatedAt": "2022-08-01T14:30:41.203653"
   }
