@@ -29,4 +29,5 @@ export interface DBTransaction extends BaseModel {
   description: string;
   type: "credit" | "debit";
   cardId: string;
+  isReverted: boolean;
 }
