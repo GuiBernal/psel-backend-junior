@@ -56,3 +56,17 @@ export async function getAccounts(req: Request, res: Response) {
 
   res.status(200).json(findAccounts);
 }
+
+export async function getBalance(req: Request, res: Response) {
+  const accountId = req.params.accountId;
+
+  const account: DBAccount = await db("accounts").where("id", accountId).first();
+
+  if (!account) {
+    return res.status(404).send("Conta Não Encontrada");
+  }
+
+  res.status(200).json({
+    balance: Number(account.balance),
+  });
+}
