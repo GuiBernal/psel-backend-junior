@@ -2,7 +2,7 @@ import supertest from "supertest";
 
 import app from "../src/app";
 
-describe("Auth", () => {
+describe("Root", () => {
   const request = supertest(app);
 
   it("root rote should return 200", async () => {
