@@ -180,7 +180,7 @@ Siga exatamente os padrões de request e response.
   }
   ```
 
-- GET /people/:peopleId/cards
+- GET /people/:peopleId/cards?page=1&pageSize=5
 
   Realiza a listagem de todos os cartões de uma pessoa.
 
@@ -242,7 +242,7 @@ Siga exatamente os padrões de request e response.
   }
   ```
 
-- GET /accounts/:accountId/transactions
+- GET /accounts/:accountId/transactions?page=1&pageSize=5
 
   Listagem de todas as transações de uma conta, com paginação opcional via query parameters.
 
