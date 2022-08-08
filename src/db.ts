@@ -8,12 +8,12 @@ export interface DBPeople extends BaseModel {
   name: string;
   document: string;
   password: string;
-  balance: number;
 }
 
 export interface DBAccount extends BaseModel {
   branch: string;
   account: string;
+  balance: number;
   peopleId: string;
 }
 

@@ -8,7 +8,6 @@ export async function up(knex: Knex): Promise<void> {
         table.text("name").notNullable();
         table.text("document").notNullable();
         table.text("password").notNullable();
-        table.decimal("balance").notNullable().defaultTo(0);
   });
 }
 
