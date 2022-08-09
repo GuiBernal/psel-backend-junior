@@ -32,7 +32,7 @@ export async function createCard(req: Request, res: Response) {
 
   const sanatizedNumber = sanatizeCardInput(number);
 
-  const { id: cardId } = (
+  const { id: cardId }: { id: string } = (
     await db("cards")
       .insert({
         id: v4(),

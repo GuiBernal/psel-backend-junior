@@ -8,14 +8,14 @@ import { DBPeople } from "../db";
 import { v4 } from "uuid";
 
 export async function createPeople(req: Request, res: Response) {
-  const body: PeopleBase = req.body;
-  const { error } = peopleSchema.validate(body.document);
+  const peopleInput: PeopleBase = req.body;
+  const { error } = peopleSchema.validate(peopleInput.document);
 
   if (error) {
     return res.status(400).send(error.message);
   }
 
-  const { name, document } = sanatizePeopleInput(body);
+  const { name, document } = sanatizePeopleInput(peopleInput);
 
   const peopleExists = await db("peoples").where("document", document).first();
 
@@ -23,9 +23,9 @@ export async function createPeople(req: Request, res: Response) {
     return res.status(409).send("Documento já cadastrado");
   }
 
-  const hashPassword = await bcrypt.hash(body.password, 10);
+  const hashPassword = await bcrypt.hash(peopleInput.password, 10);
 
-  const { id: peopleId } = (
+  const { id: peopleId }: { id: string } = (
     await db("peoples")
       .insert({
         id: v4(),

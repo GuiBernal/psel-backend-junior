@@ -34,7 +34,7 @@ export async function createTransaction(req: Request, res: Response) {
     return res.status(404).send("Cartão Não Encontrado");
   }
 
-  const { id: transactionId } = (
+  const { id: transactionId }: { id: string } = (
     await db("transactions")
       .insert({
         id: v4(),
@@ -125,7 +125,7 @@ export async function revertTransaction(req: Request, res: Response) {
     return res.status(400).send("Saldo Insuficiente Para Reversão");
   }
 
-  const { id: revertId } = (
+  const { id: revertId }: { id: string } = (
     await db("transactions")
       .insert({
         id: v4(),

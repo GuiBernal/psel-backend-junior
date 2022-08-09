@@ -21,7 +21,7 @@ export async function createAccount(req: Request, res: Response) {
     return res.status(404).send("Pessoa Não Encontrada");
   }
 
-  const { id: accountId } = (
+  const { id: accountId }: { id: string } = (
     await db("accounts")
       .insert({
         id: v4(),
