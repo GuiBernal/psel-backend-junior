@@ -12,7 +12,7 @@ export = {
     user: process.env.DB_USERNAME,
   },
   migrations: {
-    directory: "src/migrations",
+    directory: "src/infra/migrations",
     extension: "ts",
   },
 };

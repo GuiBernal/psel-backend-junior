@@ -1,10 +1,7 @@
-import { knex } from "knex";
 import app from "./app";
-import knexConfig from "../knexfile";
+import { db } from "./infra/database/db";
 
 const port = process.env.PORT ?? 9999;
-
-export const db = knex(knexConfig);
 
 db.migrate.latest();
 

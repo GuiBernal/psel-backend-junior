@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { db } from "../server";
+import { db } from "../infra/database/db";
 import { transactionSchema } from "../helpers/ validators/transaction";
 import { DBAccount, DBCard, DBTransaction } from "../db";
 import { v4 } from "uuid";

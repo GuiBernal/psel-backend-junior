@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 import { DBAccount, DBCard, DBPeople } from "../db";
 import { cardSchema } from "../helpers/ validators/card";
 import { sanatizeCardInput } from "../helpers/sanatizer/card";
-import { db } from "../server";
+import { db } from "../infra/database/db";
 import { CardBase, Pagination } from "../types/card";
 
 export async function createCard(req: Request, res: Response) {

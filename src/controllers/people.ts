@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { db } from "../server";
+import { db } from "../infra/database/db";
 import { PeopleBase } from "../types/people";
 import { peopleSchema } from "../helpers/ validators/people";
 import { sanatizePeopleInput } from "../helpers/sanatizer/people";

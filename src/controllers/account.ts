@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { v4 } from "uuid";
 import { DBAccount, DBPeople } from "../db";
 import { accountSchema } from "../helpers/ validators/account";
-import { db } from "../server";
+import { db } from "../infra/database/db";
 import { AccountBase } from "../types/account";
 
 export async function createAccount(req: Request, res: Response) {
