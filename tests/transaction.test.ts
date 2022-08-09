@@ -71,14 +71,14 @@ describe("Transaction", () => {
       const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
       const { body: card } = await request.post(`/accounts/${account.id}/cards`).send(mockCardCreation());
       await request.post(`/accounts/${account.id}/transactions`).send(mockTransactionCreation({ cvv: card.cvv }));
-      const response = await request.get(`/accounts/${account.id}/transactions`);
+      const response = await request.get(`/accounts/${account.id}/transactions?page=1&pageSize=5`);
 
       expect(response.status).toBe(200);
       expect(response.body.transactions).toBeTruthy();
     });
 
     it("should return error when account is not found", async () => {
-      const response = await request.get(`/accounts/${v4()}/transactions`);
+      const response = await request.get(`/accounts/${v4()}/transactions?page=1&pageSize=5`);
 
       expect(response.status).toBe(404);
       expect(response.text).toStrictEqual("Conta Não Encontrada");

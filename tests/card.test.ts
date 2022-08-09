@@ -96,7 +96,7 @@ describe("Card", () => {
     });
 
     it("should return error when people is not found", async () => {
-      const response = await request.get(`/people/${v4()}/cards`);
+      const response = await request.get(`/people/${v4()}/cards?page=1&pageSize=5`);
 
       expect(response.status).toBe(404);
       expect(response.text).toStrictEqual("Pessoa Não Encontrada");
