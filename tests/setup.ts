@@ -1,7 +1,5 @@
 import { randomBytes } from "crypto";
-
 import Knex from "knex";
-
 import knexConfig from "../knexfile";
 
 jest.setTimeout(20000);

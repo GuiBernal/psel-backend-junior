@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import { rootRoutes, peopleRoutes, accountRoutes, cardRoutes, transactionRoutes } from "./routes/index";
 
 const routes = Router();
