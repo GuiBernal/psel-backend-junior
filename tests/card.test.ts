@@ -95,8 +95,19 @@ describe("Card", () => {
       expect(response.body.cards).toBeTruthy();
     });
 
+    it("should create card without pagination", async () => {
+      const { body: people } = await request.post("/people").send(mockPeopleCreation());
+      const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
+      await request.post(`/accounts/${account.id}/cards`).send(mockCardCreation());
+
+      const response = await request.get(`/people/${people.id}/cards`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.cards).toBeTruthy();
+    });
+
     it("should return error when people is not found", async () => {
-      const response = await request.get(`/people/${v4()}/cards?page=1&pageSize=5`);
+      const response = await request.get(`/people/${v4()}/cards`);
 
       expect(response.status).toBe(404);
       expect(response.text).toStrictEqual("Pessoa Não Encontrada");
