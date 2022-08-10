@@ -1,5 +1,15 @@
 # psel-backend-junior
 
+## Primeiros passos
+
+1. Instale dependências com `npm ci`.
+2. Copie o arquivo `.env.example` para o arquivo `.env`.
+3. Se você tiver um PostgreSQL local instalado, crie um database vazio nele e configure o `.env` com os acessos.
+4. Se não tiver, utilize `npm run postgres:start` e `npm run database:create` para criar e configurar um com Docker.
+5. Migrações podem ser executadas no ambiente local com `npm run migration:run`. Isso é feito automaticamente pelo `npm run dev`.
+6. Execute o projeto localmente com `npm run dev`.
+7. Execute a suite de testes do projeto com `npm test`.
+
 # Pessoa Backend Junior
 
 ## Introdução
@@ -47,6 +57,8 @@ Observação: Caso configure o repositório como privado, nos solicite as contas
 Aguardamos você! :)
 
 ## Endpoints
+
+_Foi adicionado query params para paginação e crédito/débito para transações (era opcional)_
 
 Siga exatamente os padrões de request e response.
 
