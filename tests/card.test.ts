@@ -89,7 +89,7 @@ describe("Card", () => {
       const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
       await request.post(`/accounts/${account.id}/cards`).send(mockCardCreation());
 
-      const response = await request.get(`/people/${people.id}/cards?page=1&pageSize=5`);
+      const response = await request.get(`/people/${people.id}/cards?currentPage=1&itemsPerPage=5`);
 
       expect(response.status).toBe(200);
       expect(response.body.cards).toBeTruthy();

@@ -7,7 +7,7 @@ import { TransactionBase } from "../types/transaction";
 import { Pagination } from "../types/card";
 
 export async function createTransaction(req: Request, res: Response) {
-  const { value, description, type, cvv } = req.body as TransactionBase;
+  const { value, description, cvv } = req.body as TransactionBase;
   const accountId = req.params.accountId;
 
   const { error } = transactionSchema.validate(req.body);
@@ -34,13 +34,15 @@ export async function createTransaction(req: Request, res: Response) {
     return res.status(404).send("Cartão Não Encontrado");
   }
 
+  const type = value > 0 ? "credit" : "debit";
+
   const { id: transactionId }: { id: string } = (
     await db("transactions")
       .insert({
         id: v4(),
         value,
         description,
-        type,
+        type: value > 0 ? "credit" : "debit",
         cardId: card.id,
       })
       .returning("id")
@@ -57,7 +59,6 @@ export async function createTransaction(req: Request, res: Response) {
     value: value,
     description,
     cvv,
-    type,
     createdAt: findTransaction.createdAt,
     updatedAt: findTransaction.updatedAt,
   });
@@ -65,7 +66,7 @@ export async function createTransaction(req: Request, res: Response) {
 
 export async function getTransactions(req: Request, res: Response) {
   const accountId = req.params.accountId;
-  const { page, pageSize } = req.query as unknown as Pagination;
+  const { currentPage, itemsPerPage } = req.query as unknown as Pagination;
 
   const account: DBAccount = await db("accounts").where("id", accountId).first();
 
@@ -80,10 +81,10 @@ export async function getTransactions(req: Request, res: Response) {
   const findTransactions: DBTransaction[] = (
     await db("transactions")
       .whereIn("cardId", findCards)
-      .select(["id", "value", "description", "type", "createdAt", "updatedAt"])
+      .select(["id", "value", "description", "createdAt", "updatedAt"])
       .orderBy("createdAt", "asc")
-      .offset(page ? (page - 1) * pageSize : 0)
-      .limit(pageSize ?? 100)
+      .offset(currentPage ? (currentPage - 1) * itemsPerPage : 0)
+      .limit(itemsPerPage ?? 100)
   ).map(trans => {
     trans.value = Number(trans.value);
 
@@ -93,8 +94,8 @@ export async function getTransactions(req: Request, res: Response) {
   res.status(200).json({
     transactions: findTransactions,
     pagination: {
-      itemsPerPage: pageSize,
-      currentPage: page,
+      itemsPerPage: itemsPerPage,
+      currentPage: currentPage,
     },
   });
 }
@@ -149,7 +150,6 @@ export async function revertTransaction(req: Request, res: Response) {
     id: findTransaction.id,
     value: findTransaction.value,
     description: findTransaction.description,
-    type: findTransaction.type,
     createdAt: findTransaction.createdAt,
     updatedAt: findTransaction.updatedAt,
   });

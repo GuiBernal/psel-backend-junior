@@ -7,7 +7,6 @@ export function mockTransactionCreation(transaction: Partial<TransactionBase> = 
     value: Number(faker.finance.amount()),
     description: faker.random.words(),
     cvv: faker.finance.creditCardCVV(),
-    type: "debit",
     ...transaction,
   };
 }

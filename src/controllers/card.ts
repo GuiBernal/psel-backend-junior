@@ -90,7 +90,7 @@ export async function getCardByAccount(req: Request, res: Response) {
 
 export async function getCardByPeople(req: Request, res: Response) {
   const peopleId = req.params.peopleId;
-  const { page, pageSize } = req.query as unknown as Pagination;
+  const { currentPage, itemsPerPage } = req.query as unknown as Pagination;
 
   const people: DBPeople = (await db("peoples").where("id", peopleId))[0];
 
@@ -107,8 +107,8 @@ export async function getCardByPeople(req: Request, res: Response) {
       .whereIn("accountId", findAccounts)
       .select(["id", "type", "number", "cvv", "createdAt", "updatedAt"])
       .orderBy("createdAt", "asc")
-      .offset(page ? (page - 1) * pageSize : 0)
-      .limit(pageSize ?? 100)
+      .offset(currentPage ? (currentPage - 1) * itemsPerPage : 0)
+      .limit(itemsPerPage ?? 100)
   ).map(card => {
     card.number = card.number.slice(0, 4);
 
@@ -118,8 +118,8 @@ export async function getCardByPeople(req: Request, res: Response) {
   res.status(200).json({
     cards: findCards,
     pagination: {
-      itemsPerPage: pageSize,
-      currentPage: page,
+      itemsPerPage: itemsPerPage,
+      currentPage: currentPage,
     },
   });
 }

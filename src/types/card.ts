@@ -5,6 +5,6 @@ export interface CardBase {
 }
 
 export interface Pagination {
-  page: number;
-  pageSize: number;
+  currentPage: number;
+  itemsPerPage: number;
 }

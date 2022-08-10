@@ -1,6 +1,8 @@
 import supertest from "supertest";
 import { v4 } from "uuid";
 import app from "../src/app";
+import { DBTransaction } from "../src/db";
+import { db } from "../src/infra/database/db";
 import { mockAccountCreation } from "./mock/account";
 import { mockCardCreation } from "./mock/card";
 import { mockPeopleCreation } from "./mock/people";
@@ -71,7 +73,7 @@ describe("Transaction", () => {
       const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
       const { body: card } = await request.post(`/accounts/${account.id}/cards`).send(mockCardCreation());
       await request.post(`/accounts/${account.id}/transactions`).send(mockTransactionCreation({ cvv: card.cvv }));
-      const response = await request.get(`/accounts/${account.id}/transactions?page=1&pageSize=5`);
+      const response = await request.get(`/accounts/${account.id}/transactions?currentPage=1&itemsPerPage=5`);
 
       expect(response.status).toBe(200);
       expect(response.body.transactions).toBeTruthy();
@@ -97,18 +99,39 @@ describe("Transaction", () => {
   });
 
   describe("Revert Transaction", () => {
-    it("should revert transaction", async () => {
+    it("should revert positive transaction", async () => {
       const { body: people } = await request.post("/people").send(mockPeopleCreation());
       const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
       const { body: card } = await request.post(`/accounts/${account.id}/cards`).send(mockCardCreation());
       const { body: transaction } = await request
         .post(`/accounts/${account.id}/transactions`)
-        .send(mockTransactionCreation({ cvv: card.cvv, type: "credit" }));
+        .send(mockTransactionCreation({ cvv: card.cvv }));
       const response = await request.post(`/accounts/${account.id}/transactions/${transaction.id}/revert`);
+
+      const revert: DBTransaction = await db("transactions").where("id", response.body.id).first();
 
       expect(response.status).toBe(201);
       expect(response.body).toBeTruthy();
-      expect(response.body.type).toStrictEqual("debit");
+      expect(revert.type).toStrictEqual("debit");
+    });
+
+    it("should revert negative transaction", async () => {
+      const { body: people } = await request.post("/people").send(mockPeopleCreation());
+      const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
+      const { body: card } = await request.post(`/accounts/${account.id}/cards`).send(mockCardCreation());
+      await request
+        .post(`/accounts/${account.id}/transactions`)
+        .send(mockTransactionCreation({ cvv: card.cvv, value: 100 }));
+      const { body: transaction } = await request
+        .post(`/accounts/${account.id}/transactions`)
+        .send(mockTransactionCreation({ cvv: card.cvv, value: -20 }));
+      const response = await request.post(`/accounts/${account.id}/transactions/${transaction.id}/revert`);
+
+      const revert: DBTransaction = await db("transactions").where("id", response.body.id).first();
+
+      expect(response.status).toBe(201);
+      expect(response.body).toBeTruthy();
+      expect(revert.type).toStrictEqual("credit");
     });
 
     it("should return error when account is not found", async () => {
