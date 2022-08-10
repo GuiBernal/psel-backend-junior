@@ -107,8 +107,8 @@ export async function getCardByPeople(req: Request, res: Response) {
       .whereIn("accountId", findAccounts)
       .select(["id", "type", "number", "cvv", "createdAt", "updatedAt"])
       .orderBy("createdAt", "asc")
-      .offset((page - 1) * pageSize)
-      .limit(pageSize)
+      .offset(page ? (page - 1) * pageSize : 0)
+      .limit(pageSize ?? 100)
   ).map(card => {
     card.number = card.number.slice(0, 4);
 

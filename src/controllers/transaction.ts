@@ -82,8 +82,8 @@ export async function getTransactions(req: Request, res: Response) {
       .whereIn("cardId", findCards)
       .select(["id", "value", "description", "type", "createdAt", "updatedAt"])
       .orderBy("createdAt", "asc")
-      .offset((page - 1) * pageSize)
-      .limit(pageSize)
+      .offset(page ? (page - 1) * pageSize : 0)
+      .limit(pageSize ?? 100)
   ).map(trans => {
     trans.value = Number(trans.value);
 
