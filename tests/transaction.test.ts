@@ -43,6 +43,18 @@ describe("Transaction", () => {
       expect(response.text).toStrictEqual("Conta Não Encontrada");
     });
 
+    it("should return error when value is zero", async () => {
+      const { body: people } = await request.post("/people").send(mockPeopleCreation());
+      const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
+      const { body: card } = await request.post(`/accounts/${account.id}/cards`).send(mockCardCreation());
+      const response = await request
+        .post(`/accounts/${account.id}/transactions`)
+        .send(mockTransactionCreation({ cvv: card.cvv, value: 0 }));
+
+      expect(response.status).toBe(400);
+      expect(response.text).toStrictEqual("Transação Precisa de Valor Válido");
+    });
+
     it("should return error when balance is not enough", async () => {
       const { body: people } = await request.post("/people").send(mockPeopleCreation());
       const { body: account } = await request.post(`/people/${people.id}/accounts`).send(mockAccountCreation());
